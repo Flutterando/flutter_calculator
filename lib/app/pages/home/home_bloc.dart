@@ -6,47 +6,63 @@ import 'package:rxdart/subjects.dart';
 import 'package:expressions/expressions.dart';
 
 class HomeBloc extends BlocBase {
-  String listTexts = "";
+  String cacheText = "";
   bool isResolved = false;
 
   final _typeExpression$ = BehaviorSubject<String>();
   Sink<String> get typeExpressionIn => _typeExpression$.sink;
-  Stream<String> get typeExpressionOut => _typeExpression$.stream.map((t) {
-        if ((listTexts.isEmpty ||
-                (listTexts.length == 1 && !isNumeric(listTexts))) &&
-            (t == "+" || t == "*" || t == "/" || t == "%")) {
-          return "";
-        }
+  Stream<String> get typeExpressionOut => _typeExpression$.stream
+      .map(mapNotSymbolLess)
+      .map(mapACTap)
+      .map(mapExpression);
 
-        if (t == "AC") {
-          listTexts = "";
-          return "";
-        }
+  String mapNotSymbolLess(String value) {
+    if ((cacheText.isEmpty ||
+            (cacheText.length == 1 && !isNumeric(cacheText))) &&
+        (value == "+" || value == "*" || value == "/" || value == "%")) {
+      return "";
+    } else {
+      return value;
+    }
+  }
 
-        if (t == "%") {
-          listTexts = result("$listTexts*0.01");
-          return listTexts;
-        }
+  String mapACTap(String value) {
+    if (value == "AC") {
+      cacheText = "";
+      return "";
+    }
+    return value;
+  }
 
-        if (t == "=") {
-          listTexts = result(listTexts);
-          isResolved = true;
-          return listTexts;
-        }
-        if (listTexts.length > 0 &&
-            !isNumeric(t) &&
-            !isNumeric(listTexts[listTexts.length - 1])) {
-          listTexts = listTexts.substring(0, listTexts.length - 1);
-        }
+  String mapExpression(String value) {
+    if (value.isEmpty) {
+      return "";
+    }
 
-        if (isResolved && isNumeric(t)) {
-          listTexts = t;
-        } else {
-          listTexts = "${listTexts}${t}";
-        }
-        isResolved = false;
-        return listTexts;
-      });
+    if (value == "%") {
+      cacheText = result("$cacheText*0.01");
+      return cacheText;
+    }
+
+    if (value == "=") {
+      cacheText = result(cacheText);
+      isResolved = true;
+      return cacheText;
+    }
+    if (cacheText.length > 0 &&
+        !isNumeric(value) &&
+        !isNumeric(cacheText[cacheText.length - 1])) {
+      cacheText = cacheText.substring(0, cacheText.length - 1);
+    }
+
+    if (isResolved && isNumeric(value)) {
+      cacheText = value;
+    } else {
+      cacheText = "$cacheText$value";
+    }
+    isResolved = false;
+    return cacheText;
+  }
 
   String result(String expressionText) {
     try {

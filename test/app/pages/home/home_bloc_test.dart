@@ -20,115 +20,141 @@ void main() {
       bloc.typeExpressionIn.add("1");
       expect(bloc.typeExpressionOut, emits("1"));
     });
-    test("Receive expressions and concat", () async  {
-       bloc.typeExpressionIn.add("AC");
+    test("Receive expressions and concat", () async {
+      bloc.typeExpressionIn.add("AC");
 
-      expect(bloc.typeExpressionOut, emitsInOrder([
-        "",
-        "1",
-        "1+",
-        "1+2",
-      ]));
-     
+      expect(
+          bloc.typeExpressionOut,
+          emitsInOrder([
+            "",
+            "1",
+            "1+",
+            "1+2",
+          ]));
+
       bloc.typeExpressionIn.add("1");
       bloc.typeExpressionIn.add("+");
       bloc.typeExpressionIn.add("2");
-
     });
-    test("Exec expression", () async  {
-       bloc.typeExpressionIn.add("AC");
 
-      expect(bloc.typeExpressionOut, emitsInOrder([
-        "",
-        "1",
-        "1+",
-        "1+2",
-        "3",
-      ]));
-     
+    test("Exec expression", () async {
+      bloc.typeExpressionIn.add("AC");
+
+      expect(
+          bloc.typeExpressionOut,
+          emitsInOrder([
+            "",
+            "1",
+            "1+",
+            "1+2",
+            "3",
+          ]));
+
       bloc.typeExpressionIn.add("1");
       bloc.typeExpressionIn.add("+");
       bloc.typeExpressionIn.add("2");
       bloc.typeExpressionIn.add("=");
-
     });
 
-    test("Exec expression and start other", () async  {
-       bloc.typeExpressionIn.add("AC");
+    test("Exec expression and start other", () async {
+      bloc.typeExpressionIn.add("AC");
 
-      expect(bloc.typeExpressionOut, emitsInOrder([
-        "",
-        "1",
-        "1+",
-        "1+2",
-        "3",
-        "5",
-      ]));
-     
+      expect(
+          bloc.typeExpressionOut,
+          emitsInOrder([
+            "",
+            "1",
+            "1+",
+            "1+2",
+            "3",
+            "5",
+          ]));
+
       bloc.typeExpressionIn.add("1");
       bloc.typeExpressionIn.add("+");
       bloc.typeExpressionIn.add("2");
       bloc.typeExpressionIn.add("=");
       bloc.typeExpressionIn.add("5");
-
     });
-    test("Exec expression and send plus", () async  {
-       bloc.typeExpressionIn.add("AC");
+    test("Exec expression and send plus", () async {
+      bloc.typeExpressionIn.add("AC");
 
-      expect(bloc.typeExpressionOut, emitsInOrder([
-        "",
-        "1",
-        "1+",
-        "1+2",
-        "3",
-        "3+",
-      ]));
-     
+      expect(
+          bloc.typeExpressionOut,
+          emitsInOrder([
+            "",
+            "1",
+            "1+",
+            "1+2",
+            "3",
+            "3+",
+          ]));
+
       bloc.typeExpressionIn.add("1");
       bloc.typeExpressionIn.add("+");
       bloc.typeExpressionIn.add("2");
       bloc.typeExpressionIn.add("=");
       bloc.typeExpressionIn.add("+");
-
     });
 
-     test("Exec expression and not duplicate symbols", () async  {
-       bloc.typeExpressionIn.add("AC");
+    test("Exec expression and not duplicate symbols", () async {
+      bloc.typeExpressionIn.add("AC");
 
-      expect(bloc.typeExpressionOut, emitsInOrder([
-        "",
-        "1",
-        "1+",
-        "1+2",
-        "3",
-        "3+",
-        "3+",
-      ]));
-     
+      expect(
+          bloc.typeExpressionOut,
+          emitsInOrder([
+            "",
+            "1",
+            "1+",
+            "1+2",
+            "3",
+            "3+",
+            "3+",
+          ]));
+
       bloc.typeExpressionIn.add("1");
       bloc.typeExpressionIn.add("+");
       bloc.typeExpressionIn.add("2");
       bloc.typeExpressionIn.add("=");
       bloc.typeExpressionIn.add("+");
       bloc.typeExpressionIn.add("+");
-
     });
 
     test("Not start with symbol *, /, % and +", () {
       bloc.typeExpressionIn.add("AC");
-      expect(bloc.typeExpressionOut, emitsInOrder([
-        "",
-        "",
-        "",
-        "",
-        "-",
-        "",
-      ]));
+      expect(
+          bloc.typeExpressionOut,
+          emitsInOrder([
+            "",
+            "",
+            "",
+            "",
+            "-",
+            "",
+          ]));
       bloc.typeExpressionIn.add("*");
       bloc.typeExpressionIn.add("+");
       bloc.typeExpressionIn.add("/");
       bloc.typeExpressionIn.add("-");
       bloc.typeExpressionIn.add("+");
+    });
+
+    test("mapNotSymbolLess Method", () {
+      expect(bloc.mapNotSymbolLess("1"), "1");
+      expect(bloc.mapNotSymbolLess("*"), "");
+      expect(bloc.mapNotSymbolLess("/"), "");
+      expect(bloc.mapNotSymbolLess("-"), "-");
+    });
+
+    test("mapACTap Method", () {
+      expect(bloc.mapACTap("1"), "1");
+      expect(bloc.mapACTap("AC"), "");
+    });
+    
+    test("mapExpression Method", () {
+      expect(bloc.mapExpression("1"), "1");
+      bloc.cacheText = "100+100";
+      expect(bloc.mapExpression("="), "200");
     });
 
     test("Clean monitor", () {
@@ -153,14 +179,16 @@ void main() {
 
     test("Exec percent %", () {
       bloc.typeExpressionIn.add("AC");
-      expect(bloc.typeExpressionOut, emitsInOrder([
-        "",
-        "20",
-        "0.2",
-        "0.2*",
-        "0.2*200",
-        "40",
-      ]));
+      expect(
+          bloc.typeExpressionOut,
+          emitsInOrder([
+            "",
+            "20",
+            "0.2",
+            "0.2*",
+            "0.2*200",
+            "40",
+          ]));
       bloc.typeExpressionIn.add("20");
       bloc.typeExpressionIn.add("%");
       bloc.typeExpressionIn.add("*");
