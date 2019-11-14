@@ -81,7 +81,7 @@ class HomeBloc extends BlocBase {
     if (s == null) {
       return false;
     }
-    return double.parse(s, (e) => null) != null;
+    return double.tryParse(s) != null;
   }
 
   @override
