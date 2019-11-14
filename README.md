@@ -1,4 +1,4 @@
-[![Actions Status](https://github.com/AlvaroVasconcelos/flutter_calculator/workflows/build/badge.svg)](https://github.com/AlvaroVasconcelos/flutter_calculator/workflows/actions)
+[![Actions Status](https://github.com/AlvaroVasconcelos/flutter_calculator/workflows/Build/badge.svg)](https://github.com/AlvaroVasconcelos/flutter_calculator/workflows/actions)
 [![Actions Status](https://github.com/AlvaroVasconcelos/flutter_calculator/workflows/Packages/badge.svg)](https://github.com/AlvaroVasconcelos/flutter_calculator/workflows/actions)
 [![Actions Status](https://github.com/AlvaroVasconcelos/flutter_calculator/workflows/Tests/badge.svg)](https://github.com/AlvaroVasconcelos/flutter_calculator/workflows/actions)
 # Flutter Calculator
