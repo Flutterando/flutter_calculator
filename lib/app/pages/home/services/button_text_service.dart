@@ -1,5 +1,3 @@
-import 'package:bloc_pattern/bloc_pattern.dart';
-
 class ButtonTextService {
   String itemClick(int index) {
     switch (index) {
@@ -40,5 +38,6 @@ class ButtonTextService {
       case 17:
         return ".";
     }
+    return "error";
   }
 }
